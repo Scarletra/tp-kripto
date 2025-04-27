@@ -4,6 +4,7 @@ import secrets
 import math
 import secrets
 from typing import Tuple
+import hashlib
 
 def egcd(a: int, b: int) -> Tuple[int, int, int]:
     if a == 0:
@@ -197,10 +198,10 @@ def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=hashlib.sha256)
     masked_seed = em[1 : 1 + hLen]
     masked_db   = em[1 + hLen : ]
     # 2. seedMask = MGF1(maskedDB, hLen)
-    seed_mask = rsa.mgf1(masked_db, hLen, hash_func)
+    seed_mask = mgf1(masked_db, hLen, hash_func)
     seed      = bytes(x^y for x,y in zip(masked_seed, seed_mask))
     # 3. dbMask = MGF1(seed, k-hLen-1)
-    db_mask   = rsa.mgf1(seed, k - hLen - 1, hash_func)
+    db_mask   = mgf1(seed, k - hLen - 1, hash_func)
     db        = bytes(x^y for x,y in zip(masked_db, db_mask))
     # 4. split DB = l_hash || PS || 0x01 || message
     l_hash, rest = db[:hLen], db[hLen:]
