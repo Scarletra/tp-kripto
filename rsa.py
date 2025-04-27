@@ -2,6 +2,8 @@ import hashlib
 import random
 import math
 import secrets
+import math
+import secrets
 from typing import Tuple
 
 def egcd(a: int, b: int) -> Tuple[int, int, int]:
@@ -17,29 +19,6 @@ def modinv(a: int, m: int) -> int:
         raise Exception('Modular inverse does not exist')
     else:
         return x % m
-    
-# def generate_keys(bits: int = 512) -> Tuple[Tuple[int, int], Tuple[int, int]]:
-#     def is_prime(n):
-#         if n < 2:
-#             return False
-#         for i in range(2, int(n**0.5) + 1):
-#             if n % i == 0:
-#                 return False
-#         return True
-
-#     def get_prime(bits):
-#         while True:
-#             p = random.getrandbits(bits)
-#             if is_prime(p):
-#                 return p
-
-#     p = get_prime(bits)
-#     q = get_prime(bits)
-#     n = p * q
-#     phi = (p - 1) * (q - 1)
-#     e = 65537
-#     d = modinv(e, phi)
-#     return (e, n), (d, n)
 
 def power_mod(base, exponent, modulus):
     """
@@ -211,3 +190,23 @@ def encrypt_oaep(message: str, public_key: Tuple[int, int]) -> int:
     m_int = int.from_bytes(em, byteorder='big')
     c = pow(m_int, e, n)
     return c
+
+def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=hashlib.sha256) -> bytes:
+    hLen = hash_func().digest_size
+    # 1. Split:  EM = 0x00 || maskedSeed || maskedDB
+    assert em[0] == 0
+    masked_seed = em[1 : 1 + hLen]
+    masked_db   = em[1 + hLen : ]
+    # 2. seedMask = MGF1(maskedDB, hLen)
+    seed_mask = rsa.mgf1(masked_db, hLen, hash_func)
+    seed      = bytes(x^y for x,y in zip(masked_seed, seed_mask))
+    # 3. dbMask = MGF1(seed, k-hLen-1)
+    db_mask   = rsa.mgf1(seed, k - hLen - 1, hash_func)
+    db        = bytes(x^y for x,y in zip(masked_db, db_mask))
+    # 4. split DB = l_hash || PS || 0x01 || message
+    l_hash, rest = db[:hLen], db[hLen:]
+    # 5. verify l_hash == H(label)
+    assert l_hash == hash_func(label).digest(), "OAEP decryption error"
+    # 6. skip over PS until 0x01
+    idx = rest.find(b"\x01")
+    return rest[idx+1:]
