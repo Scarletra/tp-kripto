@@ -50,6 +50,7 @@ def decrypt_file(in_path: str, out_path: str, privkey_path: str):
             plain_block = oaep_decode(em, k, hash_func=sha256.SHA256)
             f_out.write(plain_block)
 
+# --- CLI entry point ---
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Usage: python decrypt_file.py <infile> <outfile> <privkey>")

@@ -202,7 +202,7 @@ class RSAOAEPGUI:
                     c_int = pow(int.from_bytes(em, "big"), e, n)
                     f_out.write(c_int.to_bytes(k, "big"))
             
-            self.encrypt_status_var.set(f"Encryption successful: {input_file} → {output_file}")
+            self.encrypt_status_var.set(f"Encryption successful: \n {input_file} \n → {output_file}")
             messagebox.showinfo("Success", "File encryption completed successfully!")
             
         except Exception as e:
@@ -227,8 +227,8 @@ class RSAOAEPGUI:
         base_name = os.path.basename(input_file)
         
         # Add '_decrypted' suffix before the extension
-        name_parts = os.path.splitext(base_name)
-        output_filename = name_parts[0] + "_decrypted" + name_parts[1]
+        name_parts = base_name.split(".")
+        output_filename = name_parts[0] + "_decrypted." + name_parts[1]
         
         # Full path to the output file
         output_path = os.path.join(directory, output_filename)
