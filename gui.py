@@ -55,25 +55,6 @@ class RSAOAEPGUI:
         if filename:
             self.private_key_var.set(filename)
     
-    def read_private_key(self, key_file_path):
-        """Read the private key tuple from a file"""
-        try:
-            with open(key_file_path, 'r') as f:
-                key_content = f.read().strip()
-                # Convert string representation of tuple to actual tuple
-                return ast.literal_eval(key_content)
-        except Exception as e:
-            raise ValueError(f"Failed to read private key: {str(e)}")
-    
-    def read_ciphertext(self, ciphertext_file_path):
-        """Read the ciphertext bytes from a file"""
-        try:
-            with open(ciphertext_file_path, 'rb') as f:  # Mode teks, bukan binary
-                text_data = f.read().strip()
-                
-                return text_data
-        except Exception as e:
-            raise ValueError(f"Failed to read ciphertext: {str(e)}")
     
     def generate_output_filename(self, input_file):
         """Generate an output filename based on the input file"""
