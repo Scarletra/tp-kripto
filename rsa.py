@@ -1,10 +1,8 @@
 import random
 import math
 import secrets
-import math
-import secrets
 from typing import Tuple
-import hashlib
+import sha256_impl as sha256
 
 def egcd(a: int, b: int) -> Tuple[int, int, int]:
     if a == 0:
@@ -159,14 +157,14 @@ def save_to_file(content, filename):
         f.write(content)
     print(f"Saved to {filename}")
 
-def mgf1(seed: bytes, length: int, hash_func=hashlib.sha256) -> bytes:
+def mgf1(seed: bytes, length: int, hash_func=sha256.SHA256) -> bytes:
     output = b""
     for counter in range(0, (length + hash_func().digest_size - 1) // hash_func().digest_size):
         c = counter.to_bytes(4, byteorder='big')
         output += hash_func(seed + c).digest()
     return output[:length]
 
-def oaep_encode(message: bytes, k: int, label: bytes = b"", hash_func=hashlib.sha256) -> bytes:
+def oaep_encode(message: bytes, k: int, label: bytes = b"", hash_func=sha256.SHA256) -> bytes:
     h_len = hash_func().digest_size
     m_len = len(message)
     if m_len > k - 2 * h_len - 2:
@@ -191,7 +189,7 @@ def encrypt_oaep(message: str, public_key: Tuple[int, int]) -> int:
     c = pow(m_int, e, n)
     return c
 
-def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=hashlib.sha256) -> bytes:
+def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=sha256.SHA256) -> bytes:
     hLen = hash_func().digest_size
     # 1. Split:  EM = 0x00 || maskedSeed || maskedDB
     assert em[0] == 0

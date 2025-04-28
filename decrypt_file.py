@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import sys
-import hashlib
 import rsa
+import sha256_impl as sha256
 
 def load_key(path: str):
-    """Read “hex_d:hex_n” and return (int_d, int_n)."""
+    """Read "hex_d:hex_n" and return (int_d, int_n)."""
     hex_part, hex_mod = open(path, "r").read().strip().split(":")
     return int(hex_part, 16), int(hex_mod, 16)
 
-def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=hashlib.sha256) -> bytes:
+def oaep_decode(em: bytes, k: int, label: bytes = b"", hash_func=sha256.SHA256) -> bytes:
     """Inverse of rsa.oaep_encode; returns the original message bytes."""
     hLen = hash_func().digest_size
     if len(em) != k:
@@ -47,7 +47,7 @@ def decrypt_file(in_path: str, out_path: str, privkey_path: str):
             m_int = pow(int.from_bytes(chunk, "big"), d, n)
             em    = m_int.to_bytes(k, "big")
             # OAEP-decode to get back the original bytes
-            plain_block = oaep_decode(em, k, hash_func=hashlib.sha256)
+            plain_block = oaep_decode(em, k, hash_func=sha256.SHA256)
             f_out.write(plain_block)
 
 if __name__ == "__main__":
