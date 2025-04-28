@@ -1,56 +1,72 @@
-# RSA-OAEP Implementation w/o Crypto Lib
+# RSA-OAEP Implementation Without Crypto Libraries
 
 ## Justification
-Projek ini adalah implementasi algoritma kriptografi RSA dengan padding OAEP (Optimal Asymmetric Encryption Padding) yang dibangun tanpa menggunakan library kriptografi standar. Alasan utama pengembangan ini adalah:
+This project is an implementation of the RSA cryptographic algorithm with Optimal Asymmetric Encryption Padding (OAEP), built **without** using standard cryptography libraries. The main reasons for this development are:
 
-1. **Pemahaman Mendalam**: Mengimplementasikan algoritma kriptografi dari awal memungkinkan kita untuk memahami setiap langkah dalam proses enkripsi dan dekripsi RSA-OAEP.
+1. **Deep Understanding**: Implementing the cryptographic algorithm from scratch allows a complete understanding of each step in the RSA-OAEP encryption and decryption process.
 
-2. **Kontrol Penuh**: Dengan implementasi manual, kita memiliki kontrol penuh atas algoritma, memungkinkan modifikasi dan penyesuaian sesuai kebutuhan.
+2. **Full Control**: With manual implementation, we have full control over the algorithm, enabling modifications and adjustments as needed.
 
-3. **Nilai Edukasi**: Projek ini berfungsi sebagai alat pembelajaran untuk memahami konsep kriptografi asimetris dan teknik padding yang aman.
+3. **Educational Value**: This project serves as a learning tool to understand asymmetric cryptography concepts and secure padding techniques.
 
-4. **Transparansi**: Setiap langkah algoritma dapat diperiksa dan diuji, memberikan transparansi penuh tentang cara kerja sistem.
+4. **Transparency**: Every step of the algorithm can be inspected and tested, providing full transparency on how the system works.
 
-5. **Penggunaan OAEP**: Padding OAEP memberikan keamanan tambahan dibandingkan dengan implementasi RSA sederhana, melindungi dari berbagai serangan seperti serangan Bleichenbacher.
+5. **Use of OAEP**: OAEP padding provides additional security compared to basic RSA implementations, protecting against various attacks such as Bleichenbacher's attack.
 
 ## User Manual
 
-### 1. Operating GUI
+
+### 1. Operating the GUI
+#### Key Pair Generation
+- Run the <code>gui.py</code> program, it will open a window with the Encrypt tab.
+- Choose the Key Generation tab at the top left of the window.
+- Select the file location to save your key pair (private and public key).
+- Click the <b>Generate Key Pair</b> button, and the program will start generating the key pair.
+- After successful creation, you can check your selected directory.
+
+#### Encryption
+
+#### Decryption
+- Run the <code>gui.py</code> program, it will open a window with the Encrypt tab.
+- Select your encrypted file by browsing through your computer directories.
+- Choose your private key file from your computer.
+- Click the <b>Decrypt</b> button, and it will display a success message once the decryption process is finished.
+- Check your current directory for the successfully decrypted message.
 
 ### 2. Project Structure
 
-**SESUAIN LAGI**
-Projek ini terdiri dari beberapa file penting:
+**TO BE ADJUSTED**
+This project consists of several important files:
 
-- `rsa.py`: Berisi implementasi inti algoritma RSA dan OAEP
-- `key_pair_generation.py`: Program CLI untuk menghasilkan kunci
-- `keygen_cli.py`: Alternatif CLI untuk menghasilkan kunci
-- `keygen_gui.py`: Antarmuka grafis untuk menghasilkan kunci
-- `gui.py`: Antarmuka grafis untuk enkripsi pesan
-- `encrypt_file.py`: Program CLI untuk enkripsi file
-- `decrypt_file.py`: Program CLI untuk dekripsi file
+- `rsa.py`: Contains the core implementation of RSA and OAEP algorithms.
+- `key_pair_generation.py`: CLI program for generating key pairs.
+- `keygen_cli.py`: Alternative CLI for key generation.
+- `keygen_gui.py`: Graphical interface for key generation.
+- `gui.py`: Graphical interface for message encryption.
+- `encrypt_file.py`: CLI program for encrypting files.
+- `decrypt_file.py`: CLI program for decrypting files.
 
 ### 3. Technical Notes
 
-- Implementasi menggunakan kunci RSA 2048-bit
-- Padding OAEP diterapkan menggunakan fungsi hash SHA-256
-- Format kunci disimpan dalam representasi hexadecimal dengan format `e:n` atau `d:n`
-- Implementasi primality testing menggunakan algoritma Miller-Rabin
-- Proses pembuatan kunci bisa memakan waktu beberapa saat karena harus mencari bilangan prima besar
+- Implementation uses 2048-bit RSA keys.
+- OAEP padding is applied using the SHA-256 hash function.
+- Key formats are saved in hexadecimal representation with `e:n` or `d:n` format.
+- Primality testing is implemented using the Miller-Rabin algorithm.
+- Key generation may take some time as it involves finding large prime numbers.
 
 ### 5. Security
 
-- Simpan kunci privat dengan aman dan jangan bagikan kepada pihak lain
-- Untuk komunikasi yang aman, hanya bagikan kunci publik kepada pihak yang ingin mengirimkan file terenkripsi
-- Implementasi ini untuk tujuan edukasi, untuk penggunaan produksi disarankan menggunakan library kriptografi yang sudah teruji dan diaudit
+- Keep your private key safe and do not share it with others.
+- For secure communication, only share your public key with parties who want to send encrypted files.
+- This implementation is intended for educational purposes; for production use, it is recommended to use well-tested and audited cryptographic libraries.
 
 ### 6. Constraints
 
-- Ukuran file yang dapat dienkripsi dibatasi oleh ukuran kunci RSA
-- GUI enkripsi saat ini mendukung **APA, APA, APA**
+- The size of files that can be encrypted is limited by the RSA key size.
+- The current encryption GUI supports **TO BE ADJUSTED, TO BE ADJUSTED, TO BE ADJUSTED**.
 
 ## System Requirements
 
-- Python 3.6 atau lebih baru
-- Tkinter untuk antarmuka grafis
-- Tidak memerlukan library kriptografi eksternal
+- Python 3.6 or later
+- Tkinter for the graphical interface
+- No external cryptographic libraries required
